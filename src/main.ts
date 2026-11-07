@@ -182,6 +182,8 @@ function renderOverview(o: Awaited<ReturnType<typeof loadOverview>>) {
   const changeHtml = change == null ? "" : `<span class="${change >= 0 ? "up" : "down"}">${change >= 0 ? "+" : ""}${fr(change, 1)} %</span> in 24 h`;
   const tile = (label: string, value: string) => `<div class="tile"><span class="label">${label}</span><b>${value}</b></div>`;
   const bar = (label: string, right: string, pct: number) => `<div class="bar"><div><span>${label}</span><span>${right}</span></div><div class="track"><div class="fill" style="width:${Math.min(100, Math.max(0, pct)).toFixed(2)}%"></div></div></div>`;
+  const pikoIco = `<img class="ico" src="/piko-logo.svg" alt="">`;
+  const icpIco = `<img class="ico" src="/icp-logo.svg" alt="">`;
   const short = (t: string) => `${t.slice(0, 5)}…${t.slice(-3)}`;
   const untilRetarget = s ? Number(s.blocksUntilRetarget) : null;
 
@@ -199,31 +201,31 @@ function renderOverview(o: Awaited<ReturnType<typeof loadOverview>>) {
       ${tile("Difficulty", s ? s.difficultyBits + " bits" : dash)}
       ${tile("Last block", last ? ago(Date.now() - last) : dash)}
       ${tile("Pace, last 5 blocks", opt(hrBurst, hashrate))}
-      ${tile("Reward", reward != null ? `<img class="ico" src="/piko-logo.svg" alt="">${fr(reward)} PIKO` : dash)}
-      ${tile("Fee per proof", fee != null ? `<img class="ico" src="/icp-logo.svg" alt="">${fr(fee, 2)} ICP` : dash)}
+      ${tile("Reward", reward != null ? `${pikoIco}${fr(reward)} PIKO` : dash)}
+      ${tile("Fee per proof", fee != null ? `${icpIco}${fr(fee, 2)} ICP` : dash)}
       ${tile("Miners", opt(o.miners as bigint | null, (x) => "⛏️ " + fr(Number(x))))}
       ${tile(`Top miner, ${blocks.length} blocks`, topShare != null ? fr(topShare * 100) + " %" : dash)}
       ${tile("PikoPool", pool ? `${pool.activeMinersNow} active · ${pool.blocksWon} blocks` : dash)}
     </div>
     <dl><dt>Next halving</dt><dd>${s ? "block " + fr(Number(s.nextHalvingHeight)) : dash}</dd>
-    <dt>ICP burned by mining</dt><dd>${s ? fr(e8(s.totalIcpBurnedE8s), 2) : dash}</dd>
-    <dt>ICP converted to cycles</dt><dd>${s ? fr(e8(s.totalIcpConvertedToCyclesE8s), 2) : dash}</dd></dl>
+    <dt>ICP burned by mining</dt><dd>${s ? icpIco + fr(e8(s.totalIcpBurnedE8s), 2) : dash}</dd>
+    <dt>ICP converted to cycles</dt><dd>${s ? icpIco + fr(e8(s.totalIcpConvertedToCyclesE8s), 2) : dash}</dd></dl>
     ${untilRetarget != null ? bar("Until next retarget", `${untilRetarget} block(s)`, ((10 - untilRetarget) / 10) * 100) : ""}
     <p class="note">Hashrate is estimated from the current difficulty and the time between blocks. Mining comes in bursts, which is why the two figures differ.</p>
   </div></section>`;
 
   const market = `<section class="card"><h2>Market</h2><div class="body"><dl>
-    <dt>ICP</dt><dd>${opt(o.icpUsd, usd)}</dd>
+    <dt>ICP</dt><dd>${opt(o.icpUsd, (x) => icpIco + usd(x))}</dd>
   </dl><p class="note">${m ? "Price from ICPSwap, the same one icptokens.net shows." : "ICPSwap is not responding: price read on-chain from the pool."}</p></div></section>`;
 
   const supplyCard = `<section class="card"><h2>Supply and burn</h2><div class="body"><dl>
-    <dt>In circulation</dt><dd>${opt(supply, (x) => fr(x))}</dd>
+    <dt>In circulation</dt><dd>${opt(supply, (x) => pikoIco + fr(x))}</dd>
     <dt>Mined, not yet claimed</dt><dd>${opt(pending, (x) => fr(x))}</dd>
-    <dt>Burned</dt><dd>${opt(burned, (x) => fr(x))}</dd>
-    <dt>Max supply</dt><dd>${opt(maxSupply, (x) => fr(x))}</dd>
+    <dt>Burned</dt><dd>${opt(burned, (x) => pikoIco + fr(x))}</dd>
+    <dt>Max supply</dt><dd>${opt(maxSupply, (x) => pikoIco + fr(x))}</dd>
   </dl>${minted != null && maxSupply ? bar("Supply mined", `${fr((minted / maxSupply) * 100, 2)} %`, (minted / maxSupply) * 100) : ""}</div></section>`;
 
-  const banks = `<section class="card"><h2>Bankrolls</h2><div class="body"><dl>${o.banks.map((b) => `<dt>${esc(b.name)}</dt><dd>${opt(b.piko, (x) => fr(e8(x)) + " PIKO")}${b.icp && b.icp > 0n ? `<br>${fr(e8(b.icp), 2)} ICP` : ""}</dd>`).join("")}</dl></div></section>`;
+  const banks = `<section class="card"><h2>Bankrolls</h2><div class="body"><dl>${o.banks.map((b) => `<dt>${esc(b.name)}</dt><dd>${opt(b.piko, (x) => pikoIco + fr(e8(x)) + " PIKO")}${b.icp && b.icp > 0n ? `<br>${fr(e8(b.icp), 2)} ICP` : ""}</dd>`).join("")}</dl></div></section>`;
 
   const recent = blocks.slice(-8).reverse();
   const blocksCard = `<section class="card"><h2>Latest blocks</h2><div class="body"><div class="tablewrap"><table>
