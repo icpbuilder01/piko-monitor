@@ -59,6 +59,7 @@ h1 em { font-style: normal; white-space: nowrap; background: linear-gradient(90d
 .tile { padding: 11px 14px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; min-width: 0; }
 .tile b { display: block; margin-top: 5px; font: 600 1rem var(--mono); }
 .ico { width: 16px; height: 16px; margin-right: 6px; vertical-align: -2px; }
+dd .ico { margin: 0 0 0 6px; }
 .bar { margin-top: 14px; font-size: .8rem; color: var(--text-2); }
 .bar div:first-child { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 4px; }
 .track { height: 12px; padding: 2px; background: var(--surface-2); border: 1px solid var(--border-strong); border-radius: 3px; }
