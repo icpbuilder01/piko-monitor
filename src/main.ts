@@ -13,12 +13,12 @@ const ID = {
   blackhole: "e3mmv-5qaaa-aaaah-aadma-cai",
 };
 
-// Reference burn = B cycles/day, net change 2026-11-02..06 (never below idle burn), pikopool and pixel measured after their 2026-11-06 fixes. Only used until this
+// Reference burn = B cycles/day, net change 2026-11-02..06 (never below idle burn), pikopool, pixel and index measured after their 2026-11-06 fixes. Only used until this
 // browser has its own measurement (see measuredBurn).
 const CANISTERS = [
   { g: "Core", n: "mother", id: ID.mother, b: 6 },
   { g: "Core", n: "ledger", id: ID.ledger, b: 57 },
-  { g: "Core", n: "index", id: "ymzxo-vqaaa-aaaaj-qse3q-cai", b: 212 },
+  { g: "Core", n: "index", id: "ymzxo-vqaaa-aaaaj-qse3q-cai", b: 13.4 },
   { g: "Core", n: "miner", id: "5qcnl-6yaaa-aaaaj-qseea-cai", b: 1 },
   { g: "Core", n: "miner frontend", id: "5xdl7-taaaa-aaaaj-qseeq-cai", b: 3.5 },
   { g: "Core", n: "landing", id: "7w27g-xiaaa-aaaaj-qseja-cai", b: 4.5 },
