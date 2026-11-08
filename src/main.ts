@@ -52,7 +52,7 @@ const motherIdl: IDL.InterfaceFactory = ({ IDL }) => {
   const Stats = IDL.Record({
     height: IDL.Nat, totalMinted: IDL.Nat, difficultyBits: IDL.Nat, blocksUntilRetarget: IDL.Nat,
     nextHalvingHeight: IDL.Nat, currentReward: IDL.Nat, miningFeeE8s: IDL.Nat, maxSupply: IDL.Nat,
-    totalIcpBurnedE8s: IDL.Nat, totalIcpConvertedToCyclesE8s: IDL.Nat,
+    totalIcpBurnedE8s: IDL.Nat, totalIcpConvertedToCyclesE8s: IDL.Nat, totalIcpFeesCollectedE8s: IDL.Nat,
   });
   const Block = IDL.Record({ height: IDL.Nat, miner: IDL.Principal, timestamp: IDL.Int });
   return IDL.Service({
@@ -208,6 +208,7 @@ function renderOverview(o: Awaited<ReturnType<typeof loadOverview>>) {
       ${tile("PikoPool", pool ? `${pool.activeMinersNow} active · ${pool.blocksWon} blocks` : dash)}
     </div>
     <dl><dt>Next halving</dt><dd>${s ? "block " + fr(Number(s.nextHalvingHeight)) : dash}</dd>
+    <dt>ICP spent mining (real-time)</dt><dd>${s ? fr(e8(s.totalIcpFeesCollectedE8s), 8) + icpIco : dash}</dd>
     <dt>ICP burned by mining</dt><dd>${s ? fr(e8(s.totalIcpBurnedE8s), 2) + icpIco : dash}</dd>
     <dt>ICP converted to cycles</dt><dd>${s ? fr(e8(s.totalIcpConvertedToCyclesE8s), 2) + icpIco : dash}</dd></dl>
     ${untilRetarget != null ? bar("Until next retarget", `${untilRetarget} block(s)`, ((10 - untilRetarget) / 10) * 100) : ""}
@@ -220,8 +221,7 @@ function renderOverview(o: Awaited<ReturnType<typeof loadOverview>>) {
 
   const supplyCard = `<section class="card"><h2>Supply and burn</h2><div class="body"><dl>
     <dt>In circulation</dt><dd>${opt(supply, (x) => fr(x) + pikoIco)}</dd>
-    <dt>Mined, not yet claimed</dt><dd>${opt(pending, (x) => fr(x))}</dd>
-    <dt>Burned</dt><dd>${opt(burned, (x) => fr(x) + pikoIco)}</dd>
+    <dt>Burned</dt><dd>${opt(burned, (x) => fr(x) + pikoIco + " 🔥")}</dd>
     <dt>Max supply</dt><dd>${opt(maxSupply, (x) => fr(x) + pikoIco)}</dd>
   </dl>${minted != null && maxSupply ? bar("Supply mined", `${fr((minted / maxSupply) * 100, 2)} %`, (minted / maxSupply) * 100) : ""}</div></section>`;
 
