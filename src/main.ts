@@ -19,7 +19,6 @@ const CANISTERS = [
   { g: "Core", n: "mother", id: ID.mother, b: 6 },
   { g: "Core", n: "ledger", id: ID.ledger, b: 57 },
   { g: "Core", n: "index", id: "ymzxo-vqaaa-aaaaj-qse3q-cai", b: 13.4 },
-  { g: "Core", n: "miner", id: "5qcnl-6yaaa-aaaaj-qseea-cai", b: 1 },
   { g: "Core", n: "miner frontend", id: "5xdl7-taaaa-aaaaj-qseeq-cai", b: 3.5 },
   { g: "Core", n: "landing", id: "7w27g-xiaaa-aaaaj-qseja-cai", b: 4.5 },
   { g: "Core", n: "pikopool", id: ID.miningPool, b: 10 },
@@ -39,7 +38,7 @@ const CANISTERS = [
 // Idle burn in B/day, read from canister status on 2026-11-06. The freezing reserve is
 // based on this, not on total burn, and the reader canister does not return it.
 const IDLE: Record<string, number> = {
-  [ID.mother]: 6, [ID.ledger]: 2.3, "ymzxo-vqaaa-aaaaj-qse3q-cai": 2.1, "5qcnl-6yaaa-aaaaj-qseea-cai": 1, "5xdl7-taaaa-aaaaj-qseeq-cai": 3.5,
+  [ID.mother]: 6, [ID.ledger]: 2.3, "ymzxo-vqaaa-aaaaj-qse3q-cai": 2.1, "5xdl7-taaaa-aaaaj-qseeq-cai": 3.5,
   "7w27g-xiaaa-aaaaj-qseja-cai": 3.5, [ID.miningPool]: 9.5, "7yyso-myaaa-aaaaj-qseia-cai": 6, "77zu2-baaaa-aaaaj-qseiq-cai": 3.5,
   "d76up-oaaaa-aaaai-ax4ia-cai": 7.7, "bcd2h-5iaaa-aaaai-ax4hq-cai": 3.5, "25x4u-gqaaa-aaaac-qhbza-cai": 7.7, "2uuxi-qyaaa-aaaac-qhbyq-cai": 3.5,
   [ID.place]: 7.7, "cglm2-byaaa-aaaac-bf4aq-cai": 3.5, "vkxrn-3qaaa-aaaak-qzk6q-cai": 1, "vnwxz-wiaaa-aaaak-qzk6a-cai": 3.5, "k6tpq-iqaaa-aaaaa-qhpfq-cai": 3.5,
