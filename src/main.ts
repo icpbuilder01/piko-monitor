@@ -280,7 +280,9 @@ function renderCanisters(st: Map<string, Status>, motherCycles: bigint | null) {
     const s = st.get(c.id);
     const cycles = s?.cycles ?? (c.id === ID.mother && motherCycles != null ? Number(motherCycles) : null);
     if (cycles != null) total += cycles;
-    const burn = cycles != null ? measuredBurn(c.id, now, cycles) ?? c.b * 1e9 : c.b * 1e9;
+    // mother sends its surplus to the other canisters, so a drop in its balance is not burn.
+    const measured = cycles != null && c.id !== ID.mother ? measuredBurn(c.id, now, cycles) : null;
+    const burn = measured ?? c.b * 1e9;
     // A canister freezes before it empties, with a reserve of freeze-threshold seconds of idle burn.
     const reserve = (IDLE[c.id] * 1e9 * (s?.freeze ?? 2592000)) / 86400;
     const days = cycles != null ? Math.max(0, (cycles - reserve) / burn) : null;
@@ -302,7 +304,7 @@ function renderCanisters(st: Map<string, Status>, motherCycles: bigint | null) {
     <div class="tablewrap"><table>
       <thead><tr><th>Canister</th><th>Cycles</th><th class="hide-sm">Burn</th><th>Runway</th><th class="hide-sm">Control</th></tr></thead>
       <tbody>${rows}</tbody></table></div>
-    <p class="note">Click a canister to get its ID, for example to top it up. Runway: days until the canister freezes. Burn is measured in this browser when possible, otherwise a 4-day reading from November 2026, net of any top-ups received in that period. Future top-ups, such as those from mother, are not counted.${missing ? ` ${missing} canister(s) unreadable: the public reader canister <code>${ID.blackhole}</code> is not yet one of their controllers.` : ""}</p>
+    <p class="note">Click a canister to get its ID, for example to top it up. Runway: days until the canister freezes. Burn is measured in this browser when possible (never for mother, which also sends cycles to the other canisters), otherwise a 4-day reading from November 2026, net of any top-ups received in that period. Future top-ups, such as those from mother, are not counted.${missing ? ` ${missing} canister(s) unreadable: the public reader canister <code>${ID.blackhole}</code> is not yet one of their controllers.` : ""}</p>
   </div></section>`;
 }
 
